@@ -16,16 +16,14 @@ const googleLogin = new GoogleStrategy({
     try{
         const oldUser = await User.findOne({ email: profile.email })
         if(oldUser){
-            console.log('old user')
             done(null, oldUser)
         }
         else{
-            console.log('new user')
             const newUser = await User.create({
                 name: profile.displayName,
                 email: profile.email,
                 googleId: profile.id,
-                avatar: profile.picture
+                avatar: profile.picture,
             })
             done(null, newUser)
         }

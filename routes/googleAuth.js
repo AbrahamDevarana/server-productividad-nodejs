@@ -12,12 +12,13 @@ router.get(
 router.get(
     '/google/callback',
     passport.authenticate('google', {
-        failureRedirect: '/login',
+        failureRedirect: '/',
         session: false
     }),
     (req, res) => {
         const token = req.user.generateJWT()
         res.cookie('x-auth-cookie', token)
+        res.json({ success: true, token })
     }
 )
 
