@@ -7,6 +7,12 @@ require("dotenv").config();
 
 const app = express();
 
+
+//Models 
+const User = require('./models/Users');
+const Perspectiva = require('./models/Perspectiva');
+const Objetivos = require('./models/Objetivos');
+
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 
@@ -14,12 +20,13 @@ app.use(passport.initialize());
 
 require('./services/googleStrategy');
 
-
-
-
 // Routes 
 app.use('/', router);
 // app.use('/api', require('./routes/api.js'));
+
+dbConfig.sync()
+    .then( () => console.log('Conectado al servidor'))
+    .catch( error => console.log(error))
 
 
 const PORT = process.env.PORT || 5000;

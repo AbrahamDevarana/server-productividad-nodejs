@@ -1,8 +1,14 @@
 const router = require('express').Router();
-const { check } = require('express-validator');
 
-router.get('/', (req, res) => {
-    res.send('Hello World!');
-});
+//Modelos
+const userRoutes = require('./api/userRoutes');
+const perspectivaRoutes = require('./api/perspectivaRoutes');
+const objetivoRoutes = require('./api/objetivoRoutes');
+
+
+//TODO: Agregar Middleware
+router.use('/user', userRoutes)
+router.use('/perspectiva', perspectivaRoutes);
+router.use('/objetivo', objetivoRoutes);
 
 module.exports = router;
