@@ -6,6 +6,7 @@ const perspectivaRoutes = require('./api/perspectivaRoutes');
 const objetivoRoutes = require('./api/objetivoRoutes');
 
 
+
 //TODO: Agregar Middleware
 router.use('/user', userRoutes)
 router.use('/perspectiva', perspectivaRoutes);

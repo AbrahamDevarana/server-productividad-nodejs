@@ -3,9 +3,11 @@ const bodyParser = require('body-parser');
 const dbConfig = require('./config/db.js');
 const passport = require('passport');
 const router = require('./routes/index.js');
+const cors = require('cors');
 require("dotenv").config();
 
 const app = express();
+
 
 
 //Models 
@@ -15,13 +17,13 @@ const Objetivos = require('./models/Objetivos');
 
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
-
+app.use(cors());
 app.use(passport.initialize());
 
 require('./services/googleStrategy');
 
 // Routes 
-app.use('/', router);
+app.use('/api', router);
 // app.use('/api', require('./routes/api.js'));
 
 dbConfig.sync()

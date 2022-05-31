@@ -81,17 +81,16 @@ const Users = db.define('users', {
                 user.updatedAt = new Date();
             },
         beforeCreate: (user) => {
-            user.password = bcrypt.hashSync("Devarana#1234*", bcrypt.genSaltSync(10));
-            },
-        beforeCreate: (user) => {
             user.short_name = `${user.name} ${user.lastName}`.normalize('NFD')
             .replace(/([^n\u0300-\u036f]|n(?!\u0303(?![\u0300-\u036f])))[\u0300-\u036f]+/gi,"$1")
             .normalize().concat(' ').replace(/([a-zA-Z]{0,} )/g, function(match){ return (match.trim()[0])}); 
+
+            user.password = bcrypt.hashSync("Devarana#1234*", bcrypt.genSaltSync(10));
             }
     },
     defaultScope: {
         attributes: {
-          exclude: ['password', 'createdAt', 'updatedAt']
+        //   exclude: ['createdAt', 'updatedAt']
         }
     }
     },
