@@ -9,7 +9,7 @@ exports.createUser = async(req, res) => {
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
-    const { name, email, lastName, birth_date, admission_date, phone } = req.body;
+    const { name, email, lastName, birth_date, admission_date, phone, secondLastName, profile_description } = req.body;
 
     const salt = bcrypt.genSalt(10);
     try {
@@ -28,6 +28,8 @@ exports.createUser = async(req, res) => {
             birth_date,
             admission_date,
             phone,
+            secondLastName,
+            profile_description
         })
 
 

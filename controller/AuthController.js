@@ -36,18 +36,6 @@ exports.login = async (req, res) => {
         res.json({
             msg: 'Usuario autenticado',
             token,
-            user:{
-                id: user.id,
-                name: user.name,
-                lastName: user.lastName,
-                email: user.email,
-                short_name: user.short_name,
-                rol_id: user.rol_id,
-                birth_date: user.birth_date,
-                admission_date: user.admission_date,
-                active: user.active,
-                google_id: user.google_id
-            }
         });
     } catch (err) {
         console.error(err.message);
@@ -80,7 +68,10 @@ exports.verifyUser = async (req, res) => {
                         birth_date: user.birth_date,
                         admission_date: user.admission_date,
                         active: user.active,
-                        google_id: user.google_id
+                        google_id: user.google_id,
+                        phone: user.phone,
+                        secondLastName: user.secondLastName,
+                        profile_description: user.profile_description,
                     }
                 });
             }

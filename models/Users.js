@@ -29,6 +29,16 @@ const Users = db.define('users', {
             }
         }
     },
+    secondLastName:{
+        type: Sequelize.STRING,
+        allowNull: true,
+        allowNull: false,
+        validate: {
+            notEmpty: {
+                msg: 'El apellido es requerido'
+            }
+        }
+    },
     email: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -65,6 +75,10 @@ const Users = db.define('users', {
         type: Sequelize.STRING,
         allowNull: true
     },
+    profile_description: {
+        type: Sequelize.TEXT,
+        allowNull: true
+    },
     createdAt: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
@@ -99,9 +113,7 @@ const Users = db.define('users', {
 Users.prototype.generateJWT = function() {
     const token = jwt.sign({
         id: this.id,
-        name: this.name,
         email: this.email,
-        short_name: this.short_name,
         expiresIn: '48h',
     }, process.env.JWT_SECRET,
     )

@@ -8,9 +8,7 @@ router.post('/register',
         check('name').not().isEmpty().withMessage('El nombre es requerido').trim(),
         check('email').isEmail().withMessage('El correo es requerido').normalizeEmail(),
         check('lastName').not().isEmpty().withMessage('El apellido es requerido'),
-        check('birth_date').not().isEmpty().withMessage('La fecha de nacimiento es requerida'),
-        check('admission_date').not().isEmpty().withMessage('La fecha de ingreso es requerida'),
-        check('phone').not().isEmpty().withMessage('El telefono es requerido'),
+        check('secondLastName').not().isEmpty().withMessage('El segundo apellido es requerido'),
     ],
     userController.createUser
 );
@@ -22,9 +20,6 @@ router.put('/update',
         check('name').not().isEmpty().withMessage('El nombre es requerido').trim(),
         check('email').isEmail().withMessage('El correo es requerido').normalizeEmail(),
         check('lastName').not().isEmpty().withMessage('El apellido es requerido'),
-        check('birth_date').not().isEmpty().withMessage('La fecha de nacimiento es requerida'),
-        check('admission_date').not().isEmpty().withMessage('La fecha de ingreso es requerida'),
-        check('phone').not().isEmpty().withMessage('El telefono es requerido'),
     ],
     userController.updateUser
 )
