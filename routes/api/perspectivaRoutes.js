@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { check } = require('express-validator');
-const perspectivaController = require('../../controller/perspectivaController');
+const perspectivaController = require('../../controller/PerspectivaController');
 
 router.post('/',
 

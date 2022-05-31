@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { check } = require('express-validator');
-const objetivoController = require('../../controller/objetivosController');
+const objetivoController = require('../../controller/ObjetivosController');
 
 router.get('/', objetivoController.getObjetivos);
 router.get('/:id', objetivoController.getObjetivo);
