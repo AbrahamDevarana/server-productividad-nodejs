@@ -12,4 +12,7 @@ router.use('/user', userRoutes)
 router.use('/perspectiva', perspectivaRoutes);
 router.use('/objetivo', objetivoRoutes);
 
+
+
+
 module.exports = router;

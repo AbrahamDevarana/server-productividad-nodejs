@@ -2,6 +2,9 @@ const router = require('express').Router();
 const {check} = require('express-validator');
 const userController = require('../../controller/UserController');
 
+
+
+// @route   POST api/user/register
 router.post('/register',
     ///Validaciones
     [
@@ -13,6 +16,7 @@ router.post('/register',
     userController.createUser
 );
 
+// @route   PUT api/user/update
 router.put('/update',
     ///Validaciones
     [
@@ -24,6 +28,7 @@ router.put('/update',
     userController.updateUser
 )
 
+// @route   DELETE api/user/delete
 router.delete('/delete',
     ///Validaciones
     [

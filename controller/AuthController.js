@@ -72,6 +72,10 @@ exports.verifyUser = async (req, res) => {
                         phone: user.phone,
                         secondLastName: user.secondLastName,
                         profile_description: user.profile_description,
+                        social_linkedin: user.social_linkedin,
+                        social_facebook: user.social_facebook,
+                        social_twitter: user.social_twitter,
+                        social_instagram: user.social_instagram                        
                     }
                 });
             }

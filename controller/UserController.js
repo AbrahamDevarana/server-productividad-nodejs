@@ -50,10 +50,10 @@ exports.updateUser = async(req, res) => {
         return res.status(400).json({ errors: errors.array() });
     }
 
-    const { id, name, email, lastName, birth_date, admission_date, phone, active } = req.body;
+    const { id, name, email, lastName, birth_date, admission_date, phone, active, secondLastName, profile_description, social_facebook, social_twitter, social_instagram, social_linkedin } = req.body;
     
     try {
-        let user = await Users.findOne({ id });
+        let user = await Users.findOne({ where:{id} });
         // Actualizar usuario
         if(user){
             user.name = name;
@@ -63,6 +63,12 @@ exports.updateUser = async(req, res) => {
             user.admission_date = admission_date;
             user.phone = phone;
             user.active = active;
+            user.secondLastName = secondLastName;
+            user.profile_description = profile_description;
+            user.social_facebook = social_facebook;
+            user.social_twitter = social_twitter;
+            user.social_instagram = social_instagram;
+            user.social_linkedin = social_linkedin;
             await user.save();
 
             res.json({
@@ -76,7 +82,7 @@ exports.updateUser = async(req, res) => {
         
     } catch (err) {
         console.error(err.message);
-        res.status(500).send('Server error');
+        res.status(500).send('[UserC] Server error');
     }
 };
 

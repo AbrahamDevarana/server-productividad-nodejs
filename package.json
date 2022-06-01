@@ -23,7 +23,8 @@
     "passport": "^0.6.0",
     "passport-google-oauth": "^2.0.0",
     "passport-jwt": "^4.0.0",
-    "sequelize": "^6.20.0"
+    "sequelize": "^6.20.0",
+    "start": "^5.1.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"

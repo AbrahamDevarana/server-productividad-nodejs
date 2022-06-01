@@ -61,14 +61,12 @@ const Users = db.define('users', {
         type: Sequelize.INTEGER,
         defaultValue: 0,
     },
-    google_id: Sequelize.STRING,
-    rol_id: Sequelize.INTEGER,
     birth_date: {
-        type: Sequelize.DATE,
+        type: Sequelize.DATEONLY,
         allowNull: true
     },
     admission_date: {
-        type: Sequelize.DATE,
+        type: Sequelize.DATEONLY,
         allowNull: true
     },
     phone: {
@@ -78,6 +76,24 @@ const Users = db.define('users', {
     profile_description: {
         type: Sequelize.TEXT,
         allowNull: true
+    },
+    google_id: Sequelize.STRING,
+    rol_id: Sequelize.INTEGER,
+    social_facebook: {
+        type: Sequelize.STRING,
+        allowNull:true
+    },
+    social_linkedin: {
+        type: Sequelize.STRING,
+        allowNull:true
+    },
+    social_twitter: {
+        type: Sequelize.STRING,
+        allowNull:true
+    },
+    social_instagram: {
+        type: Sequelize.STRING,
+        allowNull:true
     },
     createdAt: {
         type: Sequelize.DATE,
@@ -95,7 +111,7 @@ const Users = db.define('users', {
                 user.updatedAt = new Date();
             },
         beforeCreate: (user) => {
-            user.short_name = `${user.name} ${user.lastName}`.normalize('NFD')
+            user.short_name = `${user.name} ${user.lastName} ${user.secondLastName}`.normalize('NFD')
             .replace(/([^n\u0300-\u036f]|n(?!\u0303(?![\u0300-\u036f])))[\u0300-\u036f]+/gi,"$1")
             .normalize().concat(' ').replace(/([a-zA-Z]{0,} )/g, function(match){ return (match.trim()[0])}); 
 
@@ -113,7 +129,11 @@ const Users = db.define('users', {
 Users.prototype.generateJWT = function() {
     const token = jwt.sign({
         id: this.id,
-        email: this.email,
+        name:this.name,
+        lastName:this.lastName,
+        secondLastName:this.secondLastName,
+        email:this.email,
+        short_name:this.short_name,
         expiresIn: '48h',
     }, process.env.JWT_SECRET,
     )
