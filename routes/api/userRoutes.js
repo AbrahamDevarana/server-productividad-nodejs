@@ -5,7 +5,7 @@ const userController = require('../../controller/UserController');
 
 
 // @route   POST api/user/register
-router.post('/register',
+router.post('/',
     ///Validaciones
     [
         check('name').not().isEmpty().withMessage('El nombre es requerido').trim(),
