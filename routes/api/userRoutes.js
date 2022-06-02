@@ -38,7 +38,9 @@ router.delete('/delete',
 )
 
 router.get('/', userController.getUsers);
+
 router.get('/:id', userController.getUser);
+router.get('/find/:slug', userController.searchUser);
 
 module.exports = router;
    

@@ -2,6 +2,8 @@ const Sequelize = require('sequelize');
 const db = require('../config/db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const slugify = require('slugify')
+const { nanoid } = require('nanoid')
 
 const Users = db.define('users', {
     id: {
@@ -79,6 +81,7 @@ const Users = db.define('users', {
     },
     google_id: Sequelize.STRING,
     rol_id: Sequelize.INTEGER,
+    slug: Sequelize.STRING,
     social_facebook: {
         type: Sequelize.STRING,
         allowNull:true
@@ -107,20 +110,23 @@ const Users = db.define('users', {
 }, { 
     paranoid: true,
     hooks: {
-        beforeUpdate: (user) => {
-                user.updatedAt = new Date();
-            },
-        beforeCreate: (user) => {
-            user.short_name = `${user.name} ${user.lastName} ${user.secondLastName}`.normalize('NFD')
-            .replace(/([^n\u0300-\u036f]|n(?!\u0303(?![\u0300-\u036f])))[\u0300-\u036f]+/gi,"$1")
-            .normalize().concat(' ').replace(/([a-zA-Z]{0,} )/g, function(match){ return (match.trim()[0])}); 
+    beforeUpdate: (user) => {
+            user.updatedAt = new Date();
+        },
+    beforeCreate: (user) => {
+        user.short_name = `${user.name} ${user.lastName} ${user.secondLastName}`.normalize('NFD')
+        .replace(/([^n\u0300-\u036f]|n(?!\u0303(?![\u0300-\u036f])))[\u0300-\u036f]+/gi,"$1")
+        .normalize().concat(' ').replace(/([a-zA-Z]{0,} )/g, function(match){ return (match.trim()[0])}); 
 
-            user.password = bcrypt.hashSync("Devarana#1234*", bcrypt.genSaltSync(10));
-            }
+        user.password = bcrypt.hashSync("Devarana#1234*", bcrypt.genSaltSync(10));
+
+        user.slug = slugify(`${user.name} ${user.lastName} ${nanoid(6)}`, {lower: true, replacement: '_'});
+         
+        },
     },
     defaultScope: {
         attributes: {
-        //   exclude: ['createdAt', 'updatedAt']
+        //   exclude: ['password']
         }
     }
     },

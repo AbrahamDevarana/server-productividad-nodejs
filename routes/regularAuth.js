@@ -11,12 +11,6 @@ router.post('/',
     ],
 authController.login);
 
-
-router.get('/verifyUser',
-    authController.verifyUser
-);
-
-
 router.post('/register',
     ///Validaciones
     [

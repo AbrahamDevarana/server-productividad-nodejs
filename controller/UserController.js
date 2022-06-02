@@ -137,7 +137,26 @@ exports.getUser = async(req, res) => {
     }
 
     try {
-        const user = await Users.findOne( {where:{ id: req.params.id}});
+        const user = await Users.findOne( { where: { id: req.params.id }, attributes : {exclude: ['password']} });
+        if(!user){
+            res.status(400).json({ msg: 'El usuario no existe' });
+        }else{
+            res.json(user);
+        }
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+}
+
+
+exports.searchUser = async(req, res) => {
+    if(!req.params.slug){
+        return res.status(400).json({ msg: 'El slug del usuario es necesario' });
+    }
+
+    try {
+        const user = await Users.findOne( { where: { slug: req.params.slug } });
         if(!user){
             res.status(400).json({ msg: 'El usuario no existe' });
         }else{
