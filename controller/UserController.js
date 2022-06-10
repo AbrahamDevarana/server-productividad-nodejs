@@ -1,20 +1,22 @@
 const Users = require('../models/Users');
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
+const Responsabilidad = require('../models/Responsabilidad');
 
 exports.createUser = async(req, res) => {
     
   
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json(errors.mapped());
     }
-    const { name, email, lastName, birth_date, admission_date, phone, secondLastName, profile_description } = req.body;
+    const { name, email, lastName, secondLastName, birth_date, admission_date, phone, profile_description, street, 
+        suburb, bachelor_degree, birth_place, rol_id, position_id, department_id, town_id} = req.body;
 
     const salt = bcrypt.genSalt(10);
     try {
-        let user = await Users.findOne({ where:{email} });
 
+        let user = await Users.findOne({ where:{email} });
         
         if (user) {
             return res.status(400).json({ msg: 'Este usuario ya existe' });
@@ -25,11 +27,19 @@ exports.createUser = async(req, res) => {
             name,
             email,
             lastName,
+            secondLastName,
             birth_date,
             admission_date,
             phone,
-            secondLastName,
-            profile_description
+            profile_description,
+            street,
+            suburb,
+            bachelor_degree,
+            birth_place,
+            rol_id,
+            position_id,
+            department_id,
+            town_id,
         })
 
 
@@ -39,7 +49,6 @@ exports.createUser = async(req, res) => {
         })
         
     } catch (err) {
-        console.error(err.message);
         res.status(500).send('Server error');
     }
 };
@@ -47,10 +56,11 @@ exports.createUser = async(req, res) => {
 exports.updateUser = async(req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json(errors.mapped());
     }
 
-    const { id, name, email, lastName, birth_date, admission_date, phone, active, secondLastName, profile_description, social_facebook, social_twitter, social_instagram, social_linkedin } = req.body;
+    const { id, name, email, lastName, birth_date, admission_date, phone, active, secondLastName, nick_name, profile_description, social_facebook,
+        social_twitter, social_instagram, social_linkedin, street, suburb, bachelor_degree, birth_place, rol_id, position_id, department_id, town_id } = req.body;
     
     try {
         let user = await Users.findOne({ where:{id} });
@@ -59,16 +69,25 @@ exports.updateUser = async(req, res) => {
             user.name = name;
             user.email = email;
             user.lastName = lastName;
+            user.secondLastName = secondLastName;
+            user.nick_name = nick_name;
             user.birth_date = birth_date;
             user.admission_date = admission_date;
             user.phone = phone;
             user.active = active;
-            user.secondLastName = secondLastName;
             user.profile_description = profile_description;
             user.social_facebook = social_facebook;
             user.social_twitter = social_twitter;
             user.social_instagram = social_instagram;
             user.social_linkedin = social_linkedin;
+            user.street = street, 
+            user.suburb = suburb, 
+            user.bachelor_degree = bachelor_degree, 
+            user.birth_place = birth_place, 
+            user.rol_id = rol_id, 
+            user.position_id = position_id, 
+            user.department_id = department_id, 
+            user.town_id = town_id,
             await user.save();
 
             res.json({
@@ -76,7 +95,7 @@ exports.updateUser = async(req, res) => {
                 user
             })
         }else{
-            return res.status(400).json({ msg: 'El usuario no existe' });
+            return res.status(404).json({ msg: 'El usuario no existe' });
         }
 
         
@@ -89,7 +108,7 @@ exports.updateUser = async(req, res) => {
 exports.deleteUser = async(req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json(errors.mapped());
     }
 
     const { email } = req.body;
@@ -137,7 +156,7 @@ exports.getUser = async(req, res) => {
     }
 
     try {
-        const user = await Users.findOne( { where: { id: req.params.id }, attributes : {exclude: ['password']} });
+        const user = await Users.findOne( { where: { id: req.params.id }, attributes : {exclude: ['password']}, include: [{ model: Responsabilidad }] });
         if(!user){
             res.status(400).json({ msg: 'El usuario no existe' });
         }else{
@@ -148,7 +167,6 @@ exports.getUser = async(req, res) => {
         res.status(500).send('Server error');
     }
 }
-
 
 exports.searchUser = async(req, res) => {
     if(!req.params.slug){

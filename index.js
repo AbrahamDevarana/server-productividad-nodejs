@@ -14,6 +14,7 @@ const app = express();
 const User = require('./models/Users');
 const Perspectiva = require('./models/Perspectiva');
 const Objetivos = require('./models/Objetivos');
+const Responsabilidad = require('./models/Responsabilidad');
 
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())

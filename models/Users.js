@@ -3,7 +3,8 @@ const db = require('../config/db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const slugify = require('slugify')
-const { nanoid } = require('nanoid')
+const { nanoid } = require('nanoid');
+const Responsabilidad = require('./Responsabilidad');
 
 const Users = db.define('users', {
     id: {
@@ -40,6 +41,10 @@ const Users = db.define('users', {
                 msg: 'El apellido es requerido'
             }
         }
+    },
+    nick_name:{
+        type: Sequelize.STRING,
+        allowNull: true,
     },
     email: {
         type: Sequelize.STRING,
@@ -80,7 +85,6 @@ const Users = db.define('users', {
         allowNull: true
     },
     google_id: Sequelize.STRING,
-    rol_id: Sequelize.INTEGER,
     slug: Sequelize.STRING,
     social_facebook: {
         type: Sequelize.STRING,
@@ -98,6 +102,26 @@ const Users = db.define('users', {
         type: Sequelize.STRING,
         allowNull:true
     },
+    street:{
+        type: Sequelize.STRING,
+        allowNull:true
+    },
+    suburb:{
+        type: Sequelize.STRING,
+        allowNull:true
+    },
+    bachelor_degree:{
+        type: Sequelize.STRING,
+        allowNull:true
+    },
+    birth_place:{
+        type: Sequelize.STRING,
+        allowNull:true
+    },
+    rol_id: Sequelize.INTEGER,
+    position_id: Sequelize.INTEGER,
+    department_id: Sequelize.INTEGER,
+    town_id: Sequelize.INTEGER,
     createdAt: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
@@ -132,6 +156,7 @@ const Users = db.define('users', {
     },
 );
 
+
 Users.prototype.generateJWT = function() {
     const token = jwt.sign({
         id: this.id,
@@ -141,10 +166,14 @@ Users.prototype.generateJWT = function() {
         email:this.email,
         short_name:this.short_name,
         expiresIn: '48h',
+        nick_name: this.nick_name
     }, process.env.JWT_SECRET,
     )
     return token;
 }
+
+// Relaciones
+Users.hasMany(Responsabilidad, {foreignKey: 'user_id'});
 
 
 module.exports = Users;

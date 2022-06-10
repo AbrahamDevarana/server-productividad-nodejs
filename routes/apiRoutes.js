@@ -4,6 +4,7 @@ const router = require('express').Router();
 const userRoutes = require('./api/userRoutes');
 const perspectivaRoutes = require('./api/perspectivaRoutes');
 const objetivoRoutes = require('./api/objetivoRoutes');
+const areaRoutes = require('./api/areaRoutes');
 
 
 
@@ -11,6 +12,7 @@ const objetivoRoutes = require('./api/objetivoRoutes');
 router.use('/user', userRoutes)
 router.use('/perspectiva', perspectivaRoutes);
 router.use('/objetivo', objetivoRoutes);
+router.use('/area', areaRoutes);
 
 
 

@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const passport = require('passport');
+const jwt = require('../services/jwt');
 
 
 router.get(
@@ -16,9 +17,13 @@ router.get(
         session: false
     }),
     (req, res) => {
-        const token = req.user.generateJWT()
-        res.cookie('x-auth-cookie', token)
-        res.json({ success: true, token })
+        const accessToken = jwt.createAccessToken(req.user);
+        const refreshToken = jwt.createRefreshToken(req.user);
+        res.status(200).json({
+            code: 200,
+            accessToken,
+            refreshToken
+        });
     }
 )
 

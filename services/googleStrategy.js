@@ -11,8 +11,6 @@ const googleLogin = new GoogleStrategy({
     callbackURL: process.env.GOOGLE_CALLBACK_URL,
     passReqToCallback: true
 },  async (accessToken, refreshToken, profile, done) => {
-    console.log(profile)
-
     try{
         const oldUser = await User.findOne({ email: profile.email })
         if(oldUser){
