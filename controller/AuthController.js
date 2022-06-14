@@ -33,13 +33,13 @@ exports.login = async (req, res) => {
 
         const token = user.generateJWT();
 
-        res.json({
+        res.status(200).json({
             msg: 'Usuario autenticado',
             token,
         });
     } catch (err) {
         console.error(err.message);
-        res.status(500).send('[Auth Controller]: Server error');
+        res.status(500).json({ msg: 'Server error' });;
     }
 }
 

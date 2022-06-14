@@ -20,14 +20,14 @@ exports.createResponsabilidad = async(req, res) => {
             user_id: id,
         });
 
-        res.json({
+        res.status(200).json({
             responsabilidad,
             msg: 'Responsabilidad añadida',
         })
 
     } catch (err) {
         console.error(err.message);
-        res.status(500).send('Server error');
+        res.status(500).json({ msg: 'Server error' });
     }
 }
 
@@ -42,7 +42,7 @@ exports.deleteResponsabilidad = async(req, res) => {
         const responsabilidad = await Responsabilidad.findOne({ where: { id } });
         if (responsabilidad) {
             await responsabilidad.destroy();
-            res.json({
+            res.status(200).json({
                 responsabilidad,
                 msg: 'Responsabilidad eliminada',
             })
@@ -50,7 +50,6 @@ exports.deleteResponsabilidad = async(req, res) => {
             return res.status(400).json({ msg: 'La responsabilidad no existe o ya fue eliminada' });
         }
     } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server error');
+        res.status(500).json({ msg: 'Server error' });
     }
 }

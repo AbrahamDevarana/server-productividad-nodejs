@@ -25,14 +25,13 @@ exports.createPerspectiva = async(req, res) => {
 
         await perspectiva.save();
 
-        res.json({
+        res.status(200).json({
             msg: 'Perspectiva creada',
             perspectiva,
         })
 
     } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server error');
+        res.status(500).json({ msg: 'Server error' });
     }
 }
 
@@ -51,7 +50,7 @@ exports.updatePerspectiva = async(req, res) => {
             perspectiva.descripcion = descripcion;
             perspectiva.estatus_id = estatus_id;
             await perspectiva.save();
-            res.json({
+            res.status(200).json({
                 msg: 'Perspectiva actualizada',
                 perspectiva,
             })
@@ -59,8 +58,7 @@ exports.updatePerspectiva = async(req, res) => {
             return res.status(400).json({ msg: 'La perspectiva no existe' });
         }
     } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server error');
+        res.status(500).json({ msg: 'Server error' });
     }
 }
 
@@ -70,14 +68,13 @@ exports.getPerspectivas = async(req, res) => {
         if (!perspectivas) {
             return res.status(400).json({ msg: 'No hay perspectivas' });
         }else{
-            res.json({
+            res.status(200).json({
                 msg: 'Perspectivas obtenidas',
                 perspectivas
             })
         }
     } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server error');
+        res.status(500).json({ msg: 'Server error' });
     }
 }
 
@@ -89,15 +86,14 @@ exports.getPerspectiva = async(req, res) => {
         if (!perspectiva) {
             return res.status(400).json({ msg: 'La perspectiva no existe' });
         }else{
-            res.json({
+            res.status(200).json({
                 msg: 'Perspectiva obtenida',
                 perspectiva
             })
         }
 
     } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server error');
+        res.status(500).json({ msg: 'Server error' });
     }
 }
 
@@ -113,7 +109,7 @@ exports.deletePerspectiva = async(req, res) => {
         const perspectiva = await Perspectiva.findOne({ where: { id } });
         if (perspectiva) {
             await perspectiva.destroy();
-            res.json({
+            res.status(200).json({
                 msg: 'Perspectiva eliminada',
                 perspectiva
             })
@@ -121,8 +117,7 @@ exports.deletePerspectiva = async(req, res) => {
             return res.status(400).json({ msg: 'La perspectiva no existe' });
         }
     } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server error');
+        res.status(500).json({ msg: 'Server error' });
     }
 }
 

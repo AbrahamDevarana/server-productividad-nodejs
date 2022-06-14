@@ -43,13 +43,13 @@ exports.createUser = async(req, res) => {
         })
 
 
-        res.json({
+        res.status(200).json({
             msg: 'Usuario creado',
             user
         })
         
     } catch (err) {
-        res.status(500).send('Server error');
+        res.status(500).json({ msg: 'Server error' });
     }
 };
 
@@ -90,7 +90,7 @@ exports.updateUser = async(req, res) => {
             user.town_id = town_id,
             await user.save();
 
-            res.json({
+            res.status(200).json({
                 msg: 'Usuario actualizado',
                 user
             })
@@ -119,7 +119,7 @@ exports.deleteUser = async(req, res) => {
         if(user){
             await user.destroy()
 
-            res.json({
+            res.status(200).json({
                 msg: 'Usuario eliminado',
                 user
             })
@@ -130,7 +130,7 @@ exports.deleteUser = async(req, res) => {
         
     } catch (err) {
         console.error(err.message);
-        res.status(500).send('Server error');
+        res.status(500).json({ msg: 'Server error' });
     }
 }
 
@@ -141,11 +141,10 @@ exports.getUsers = async(req, res) => {
         if(!users){
             res.status(400).json({ msg: 'No hay usuarios registrados' });
         }else{
-            res.json(users);
+            res.status(200).json(users);
         }
     } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server error');
+        res.status(500).json({ msg: 'Server error' });
     }
 }
 
@@ -160,11 +159,11 @@ exports.getUser = async(req, res) => {
         if(!user){
             res.status(400).json({ msg: 'El usuario no existe' });
         }else{
-            res.json(user);
+            res.status(200).json(user);
         }
     } catch (err) {
         console.error(err.message);
-        res.status(500).send('Server error');
+        res.status(500).json({ msg: 'Server error' });
     }
 }
 
@@ -178,10 +177,10 @@ exports.searchUser = async(req, res) => {
         if(!user){
             res.status(400).json({ msg: 'El usuario no existe' });
         }else{
-            res.json(user);
+            res.status(200).json(user);
         }
     } catch (err) {
         console.error(err.message);
-        res.status(500).send('Server error');
+        res.status(500).json({ msg: 'Server error' });
     }
 }

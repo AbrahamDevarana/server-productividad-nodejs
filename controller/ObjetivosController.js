@@ -17,14 +17,13 @@ exports.createObjetivo = async(req, res) => {
             perspectiva_id
         });
 
-        res.json({
+        res.status(200).json({
             msg: 'Objetivo creado',
             objetivo,
         })
 
     } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server error');
+        res.status(500).json({ msg: 'Server error' });;
     }
 }
 
@@ -46,7 +45,7 @@ exports.updateObjetivo = async(req, res) => {
             objetivo.inicio_periodo = inicio_periodo;
             objetivo.fin_periodo = fin_periodo;
             await objetivo.save();
-            res.json({
+            res.status(200).json({
                 msg: 'Objetivo actualizado',
                 objetivo,
             })
@@ -55,8 +54,7 @@ exports.updateObjetivo = async(req, res) => {
         }
 
     } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server error');
+        res.status(500).json({ msg: 'Server error' });;
     }
 }
 
@@ -72,7 +70,7 @@ exports.deleteObjetivo = async(req, res) => {
         // Actualizar usuario
         if (objetivo) {
             await objetivo.destroy();
-            res.json({
+            res.status(200).json({
                 msg: 'Objetivo eliminado',
                 objetivo,
             })
@@ -81,8 +79,7 @@ exports.deleteObjetivo = async(req, res) => {
         }
 
     } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server error');
+        res.status(500).json({ msg: 'Server error' });;
     }
 }
 
@@ -93,13 +90,12 @@ exports.getObjetivos = async(req, res) => {
         if (!objetivos) {
             return res.status(400).json({ msg: 'No hay objetivos registrados' });
         }else{
-            res.json({
+            res.status(200).json({
                 objetivos,
             })
         }
     } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server error');
+        res.status(500).json({ msg: 'Server error' });;
     }
 }
 
@@ -111,12 +107,11 @@ exports.getObjetivo = async(req, res) => {
         if (!objetivo) {
             return res.status(400).json({ msg: 'El objetivo no existe' });
         }else{
-            res.json({
+            res.status(200).json({
                 objetivo,
             })
         }
     } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server error');
+        res.status(500).json({ msg: 'Server error' });;
     }
 }

@@ -1,32 +1,31 @@
 const router = require('express').Router();
 const { check } = require('express-validator');
-const areasController = require('../../controller/AreasController');
+const departamentoController = require('../../controller/DepartamentosController');
 
-router.get('/', areasController.getAreas);
-router.get('/:id', areasController.getArea);
 
+router.get('/', departamentoController.getDepartamentos);
+router.get('/:id', departamentoController.getDepartamento);
 
 router.post('/',
-    //validaciones
+    
     [
         check('nombre').not().isEmpty().withMessage('El nombre es requerido').trim(),
         check('descripcion').not().isEmpty().withMessage('La descripcion es requerida'),
+        check('area_id').not().isEmpty().withMessage('El area_id es requerido'),
     ],
-    areasController.createArea    
+
+    departamentoController.createDepartamento
 )
 
 router.put('/:id',
-    //validaciones
     [
-        // check('id').not().isEmpty().withMessage('El id es requerido'),
         check('nombre').not().isEmpty().withMessage('El nombre es requerido').trim(),
         check('descripcion').not().isEmpty().withMessage('La descripcion es requerida'),
+        check('area_id').not().isEmpty().withMessage('El area_id es requerido'),
     ],
-    areasController.updateArea
+    departamentoController.updateDepartamento
 )
 
 router.delete('/:id',
-    areasController.deleteArea
+    departamentoController.deleteDepartamento
 )
-
-module.exports = router;

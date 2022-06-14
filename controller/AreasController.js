@@ -14,15 +14,14 @@ exports.createArea = async(req, res) => {
             descripcion,
         });
 
-        res.json({
+        res.status(200).json({
             area,
             msg: 'Area añadida',
         })
 
     }
     catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server error');
+        res.status(500).json({ msg: 'Server error' });;
     }
 }
 
@@ -32,7 +31,9 @@ exports.updateArea = async(req, res) => {
         return res.status(400).json(errors.mapped());
     }
 
-    const {id, nombre, descripcion} = req.body;
+    const {nombre, descripcion} = req.body;
+    const { id } = req.params
+    console.log(id);
 
     const area = await Area.findOne({ where: { id } });
     if (area) {
@@ -41,7 +42,7 @@ exports.updateArea = async(req, res) => {
             descripcion,
         });
 
-        res.json({
+        res.status(200).json({
             area,
             msg: 'Area actualizada',
         })
@@ -59,7 +60,7 @@ exports.deleteArea = async(req, res) => {
     const area = await Area.findOne({ where: { id } });
     if (area) {
         await area.destroy();
-        res.json({
+        res.status(200).json({
             area,
             msg: 'Area eliminada',
         })
@@ -87,7 +88,7 @@ exports.getArea = async(req, res) => {
 
     const area = await Area.findOne({ where: { id } });
     if (area) {
-        res.json({
+        res.status(200).json({
             area,
             msg: 'Area obtenida',
         })
