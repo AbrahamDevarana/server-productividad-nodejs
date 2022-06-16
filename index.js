@@ -34,6 +34,7 @@ app.use(cookieSession({
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.set("trust proxy", 1);
 require('./services/googleStrategy');
 
 // Routes 
