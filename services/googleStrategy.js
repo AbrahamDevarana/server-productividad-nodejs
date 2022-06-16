@@ -13,6 +13,7 @@ const googleLogin = new GoogleStrategy({
     passReqToCallback: true
 },  async (request, accessToken, refreshToken, profile, done) => {
 
+    console.log(profile);
     const email = profile.emails[0].value;
         // const user = await User.findOne({ where:{ email: email } }).catch(error => {
         //     console.log('Error',error);

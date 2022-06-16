@@ -25,7 +25,11 @@ app.use(cookieSession({
     maxAge: 24 * 60 * 60 * 1000, // 24 hours,
     saveUninitialized: true,
     resave: false,
-    name: 'express'
+    name: 'express',
+    cookie: {
+        sameSite: 'none',
+        secure: true
+    }
 }));
 
 app.use(passport.initialize());
