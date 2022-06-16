@@ -64,7 +64,8 @@ const Users = db.define('users', {
     },
     birth_date: {
         type: Sequelize.DATEONLY,
-        allowNull: true
+        allowNull: true,
+        defaultValue: '1990-01-01',
     },
     admission_date: {
         type: Sequelize.DATEONLY,
@@ -111,6 +112,10 @@ const Users = db.define('users', {
     birth_place:{
         type: Sequelize.STRING,
         allowNull:true
+    },
+    picture: {
+        type: Sequelize.TEXT,
+        allowNull: true
     },
     rol_id: Sequelize.INTEGER,
     position_id: Sequelize.INTEGER,

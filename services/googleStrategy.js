@@ -34,7 +34,7 @@ const googleLogin = new GoogleStrategy({
                 email: email,
                 googleId: profile.id,
                 password: 'Devarana#1234*',
-
+                picture: profile.photos[0].value
             }
         }).catch(error => {
             console.log('Error',error);

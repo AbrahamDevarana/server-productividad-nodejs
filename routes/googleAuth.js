@@ -22,7 +22,8 @@ router.get(
     (req, res) => {
 
         console.log('req.user', req.user);
-        res.send("Thank you for logging in!");
+       
+        res.status(200).json({ msg: 'Has iniciado sesión correctamente' })
     })
 
 router.get('/validate', isUserAuthenticated,

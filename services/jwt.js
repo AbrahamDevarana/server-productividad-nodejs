@@ -13,6 +13,7 @@ exports.createAccessToken = (user) => {
         email:user.email,
         short_name:user.short_name,
         nick_name: user.nick_name,
+        picture: user.picture,
         expiresIn: moment().add(3, 'days').unix(),
     }
     return jwt.sign(payload, JWT_SECRET);
