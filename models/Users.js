@@ -35,12 +35,6 @@ const Users = db.define('users', {
     secondLastName:{
         type: Sequelize.STRING,
         allowNull: true,
-        allowNull: false,
-        validate: {
-            notEmpty: {
-                msg: 'El apellido es requerido'
-            }
-        }
     },
     nick_name:{
         type: Sequelize.STRING,

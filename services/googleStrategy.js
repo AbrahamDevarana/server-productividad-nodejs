@@ -1,8 +1,9 @@
+const User = require('../models/Users');
+require("dotenv").config({ path: ".env" });
+
+
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-require("dotenv").config({ path: "variables.env" });
-
-const User = require('../models/Users');
 
 
 const googleLogin = new GoogleStrategy({
@@ -10,26 +11,57 @@ const googleLogin = new GoogleStrategy({
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: process.env.GOOGLE_CALLBACK_URL,
     passReqToCallback: true
-},  async (accessToken, refreshToken, profile, done) => {
-    try{
-        const oldUser = await User.findOne({ email: profile.email })
-        if(oldUser){
-            done(null, oldUser)
-        }
-        else{
-            const newUser = await User.create({
-                name: profile.displayName,
-                email: profile.email,
+},  async (request, accessToken, refreshToken, profile, done) => {
+
+    const email = profile.emails[0].value;
+        // const user = await User.findOne({ where:{ email: email } }).catch(error => {
+        //     console.log('Error',error);
+        //     return done(error, null);
+        // });
+
+        // if (user) {
+        //     console.log('User found', user);
+        //     return done(null, user);
+        // }
+
+        const [user] = await User.findOrCreate({
+            where: { email: email },
+            defaults: {
+                name: profile.name.givenName,
+                lastName: (profile.name.familyName).split(" ", 2)[0],
+                secondLastName: (profile.name.familyName).split(" ", 2)[1],
+                email: email,
                 googleId: profile.id,
-                avatar: profile.picture,
-            })
-            done(null, newUser)
+                password: 'Devarana#1234*',
+
+            }
+        }).catch(error => {
+            console.log('Error',error);
+            return done(error, null);
+        });
+
+        if (user) {
+            // console.log('User found', user);
+            return done(null, user);
         }
+})
+
+passport.serializeUser((user, done) => {
+    return done(null, user.id);
+})
+
+passport.deserializeUser( async (id, done) => {
+    const user = await User.findOne({ where:{id: id } }).catch(error => {
+        // console.log('Error',error);
+        return done(error, null);
+    });
+       
+    if(user){
+        return done(null, user);
     }
-    catch(err){
-        console.log(err)
-    }
+    
+     
 })
 
 
-passport.use(googleLogin)
+passport.use(googleLogin);

@@ -1,8 +1,8 @@
-// const passport = require('passport');
+const passport = require('passport');
 
-// const requireJwtAuth = passport.authenticate('jwt', { session: false });
+const requireJwtAuth = passport.authenticate('jwt', { session: false });
 
-// module.exports = requireJwtAuth;
+module.exports = requireJwtAuth;
 
 const jwt = require('jsonwebtoken')
 const Users = require('../models/Users')
@@ -27,3 +27,4 @@ module.exports = (req, res, next) => {
         res.status(400).json({ error: {msg: 'Token no valido' } })
     }
 }
+

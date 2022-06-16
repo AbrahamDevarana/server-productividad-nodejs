@@ -4,11 +4,11 @@ const dbConfig = require('./config/db.js');
 const passport = require('passport');
 const router = require('./routes/index.js');
 const cors = require('cors');
-require("dotenv").config();
-
+require('dotenv').config()
+const cookieSession = require('express-session');
 const app = express();
 
-
+const COOKIE_SECRET = process.env.COOKIE_SECRET;
 
 //Models 
 const User = require('./models/Users');
@@ -18,14 +18,22 @@ const Responsabilidad = require('./models/Responsabilidad');
 
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
-app.use(cors());
-app.use(passport.initialize());
+app.use(cors( { origin: process.env.CLIENT_URL, credentials:true } ));
 
+app.use(cookieSession({
+    secret: COOKIE_SECRET,
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours,
+    saveUninitialized: true,
+    resave: false,
+    name: 'express'
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 require('./services/googleStrategy');
 
 // Routes 
 app.use('/api', router);
-// app.use('/api', require('./routes/api.js'));
 
 dbConfig.sync()
     .then( () => console.log('Conectado al servidor'))
