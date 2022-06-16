@@ -27,8 +27,8 @@ app.use(cookieSession({
     resave: false,
     name: 'express',
     cookie: {
-        sameSite: 'none',
-        secure: true
+        sameSite: process.env.NODE_ENV === "production" ? 'none' : 'lax', // must be 'none' to enable cross-site delivery
+        secure: process.env.NODE_ENV === "production", // must be true if sameSite='none'
     }
 }));
 
