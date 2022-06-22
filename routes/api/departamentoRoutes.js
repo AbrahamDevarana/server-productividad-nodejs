@@ -5,6 +5,7 @@ const departamentoController = require('../../controller/DepartamentosController
 
 router.get('/', departamentoController.getDepartamentos);
 router.get('/:id', departamentoController.getDepartamento);
+router.get('/area/:area_id', departamentoController.getDepartamentoArea);
 
 router.post('/',
     

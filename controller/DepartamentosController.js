@@ -105,8 +105,29 @@ exports.getDepartamentos = async(req, res) => {
 
 exports.getDepartamento = async(req, res) => {
     const { id } = req.params;
+    console.log(req.query);
     try {
         const departamento = await Departamento.findOne({ where: { id } });
+        if (departamento) {
+            res.status(200).json({
+                departamento,
+                msg: 'Departamento obtenido',
+            })
+        }
+        else {
+            return res.status(400).json({ msg: 'El departamento no existe' });
+        }
+    } catch (error) {
+        res.status(500).json({ msg: 'Server error' });
+
+    }
+}
+
+exports.getDepartamentoArea = async(req, res) => {
+    const { area_id } = req.params;
+    console.log(req.params);
+    try {
+        const departamento = await Departamento.findAll({ where: { area_id } });
         if (departamento) {
             res.status(200).json({
                 departamento,

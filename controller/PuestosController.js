@@ -41,6 +41,11 @@ exports.updatePuesto = async(req, res) => {
                 descripcion,
                 estatus_id
             });
+
+            res.status(200).json({
+                puesto,
+                msg: 'Puesto actualizado',
+            })
         }
         else {
             return res.status(400).json({ msg: 'El puesto no existe' });

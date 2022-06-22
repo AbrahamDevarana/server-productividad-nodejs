@@ -39,9 +39,9 @@ const googleLogin = new GoogleStrategy({
             return done(error, null);
         });
 
-        if (user) {
+        if (user.dataValues) {
             // console.log('User found', user);
-            return done(null, user);
+            return done(null, user.dataValues);
         }
 })
 
