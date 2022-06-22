@@ -1,10 +1,9 @@
 const Sequelize = require('sequelize');
-const slugify = require('slugify')
 const db = require('../config/db');
-const Area = require('./Area');
+const slugify = require('slugify');
+const Users = require('./Users');
 
-
-const Departamento = db.define('departamentos', {
+const Puestos = db.define('puestos', {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -16,7 +15,7 @@ const Departamento = db.define('departamentos', {
         allowNull: false,
         validate: {
             notEmpty: {
-                msg: 'El nombre del departamento es requerido'
+                msg: 'El nombre del puesto es requerido'
             }
         }
     },
@@ -25,16 +24,16 @@ const Departamento = db.define('departamentos', {
         allowNull: false,
         validate: {
             notEmpty: {
-                msg: 'La descripción del departamento es requerida'
+                msg: 'La descripción del puesto es requerida'
             }
         }
     },
-    lider_id: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0
-    },
     slug: Sequelize.STRING,
-    area_id: Sequelize.INTEGER,
+    estatus_id: {   
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 1
+    },
     createdAt: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
@@ -42,19 +41,21 @@ const Departamento = db.define('departamentos', {
     updatedAt: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
-    },
+    }
 }, {
     paranoid: true,
     hooks: {
-        beforeUpdate: (departamento) => {
-            departamento.updatedAt = new Date();
+        beforeUpdate: (puestos) => {
+            puestos.updatedAt = new Date();
         },
-        beforeCreate: (departamento) => {
-            departamento.slug = slugify(departamento.nombre, {lower: true});
+        beforeCreate: (puestos) => {
+            puestos.slug = slugify(puestos.nombre, { lower: true })
         }
     }
 })
 
-Departamento.belongsTo(Area, {foreignKey: 'area_id'});
+Puestos.hasOne( Users , {
+    foreignKey: 'position_id'
+})
 
-module.exports = Departamento;
+module.exports = Puestos;

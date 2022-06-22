@@ -1,4 +1,4 @@
-const Departamento = require('../models/Departamento');
+const Departamento = require('../models/Departamentos');
 const { validationResult } = require('express-validator');
 const Area = require('../models/Area');
 
@@ -9,19 +9,23 @@ exports.createDepartamento = async(req, res) => {
     }
     const {nombre, descripcion, area_id} = req.body;
 
-    
     try {
-        const area = await Area.findOne({ where: { id_area } });
+       
+        const area = await Area.findOne({ where: { id: area_id } })
 
         if(!area) {
             return res.status(400).json({ msg: 'La area no existe o o no esta disponible' });
         }
-
+    
         const departamento = await Departamento.create({
             nombre,
             descripcion,
             area_id,
+        }, { 
+            include: [Area]
         });
+
+        
         
         res.status(200).json({
             departamento,
@@ -30,7 +34,6 @@ exports.createDepartamento = async(req, res) => {
 
     }
     catch (err) {
-        
         res.status(500).json({ msg: 'Server error' });
     }
 }
@@ -89,7 +92,7 @@ exports.deleteDepartamento = async(req, res) => {
 
 exports.getDepartamentos = async(req, res) => {
     try {
-        const departamentos = await Departamento.findAll();
+        const departamentos = await Departamento.findAll({ include: [Area] });
         res.status(200).json({
             departamentos,
             msg: 'Departamentos obtenidos',

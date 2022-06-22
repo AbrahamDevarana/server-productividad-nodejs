@@ -41,8 +41,12 @@ router.get('/validate', isUserAuthenticated,
     }
 )
 
-router.get('/logout', isUserAuthenticated, (req, res) => {
-   req.session.destroy();
+router.get('/logout', (req, res) => {
+    res.clearCookie('express');
+    req.session.destroy(null);
+    req.session = '';
+    res.status(200).json({ msg: 'Has cerrado sesión correctamente' })
+
 })
 
 

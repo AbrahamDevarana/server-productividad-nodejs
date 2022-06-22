@@ -11,10 +11,17 @@ const app = express();
 const COOKIE_SECRET = process.env.COOKIE_SECRET;
 
 //Models 
-const User = require('./models/Users');
-const Perspectiva = require('./models/Perspectiva');
-const Objetivos = require('./models/Objetivos');
-const Responsabilidad = require('./models/Responsabilidad');
+require('./models/Users.js');
+require('./models/Perspectiva.js');
+require('./models/Objetivos.js');
+require('./models/Responsabilidad.js');
+require('./models/Departamentos.js');
+
+require('./models/Empresa/Competencias.js');
+require('./models/Empresa/Corporativo.js');
+require('./models/Empresa/Valores.js');
+require('./models/Empresa/Responsabilidad.js');
+
 
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())

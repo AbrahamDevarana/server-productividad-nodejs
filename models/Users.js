@@ -117,9 +117,18 @@ const Users = db.define('users', {
         type: Sequelize.TEXT,
         allowNull: true
     },
-    rol_id: Sequelize.INTEGER,
-    position_id: Sequelize.INTEGER,
-    department_id: Sequelize.INTEGER,
+    rol_id: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+    },
+    position_id: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+    },
+    department_id: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+    },
     town_id: Sequelize.INTEGER,
     createdAt: {
         type: Sequelize.DATE,

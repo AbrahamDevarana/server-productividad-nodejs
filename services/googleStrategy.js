@@ -12,8 +12,6 @@ const googleLogin = new GoogleStrategy({
     callbackURL: process.env.GOOGLE_CALLBACK_URL,
     passReqToCallback: true
 },  async (request, accessToken, refreshToken, profile, done) => {
-
-    console.log(profile);
     const email = profile.emails[0].value;
         // const user = await User.findOne({ where:{ email: email } }).catch(error => {
         //     console.log('Error',error);
@@ -32,7 +30,7 @@ const googleLogin = new GoogleStrategy({
                 lastName: (profile.name.familyName).split(" ", 2)[0],
                 secondLastName: (profile.name.familyName).split(" ", 2)[1],
                 email: email,
-                googleId: profile.id,
+                google_id: profile.id,
                 password: 'Devarana#1234*',
                 picture: profile.photos[0].value
             }

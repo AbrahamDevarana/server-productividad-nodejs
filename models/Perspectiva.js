@@ -41,8 +41,8 @@ const Perspectiva = db.define('perspectivas', {
         defaultValue: Sequelize.NOW
     },
 
-}, {paranoid: true},
-    {
+}, {
+        paranoid: true,    
         hooks: {
             beforeUpdate: (user) => {
                 user.updatedAt = new Date();

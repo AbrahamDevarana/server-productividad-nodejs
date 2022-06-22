@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+const slugify = require('slugify')
 const db = require('../config/db');
 
 const Area = db.define('areas', {
@@ -26,6 +27,7 @@ const Area = db.define('areas', {
             }
         }
     },
+    slug: Sequelize.STRING,
     createdAt: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
@@ -39,6 +41,9 @@ const Area = db.define('areas', {
         hooks: {
             beforeUpdate: (area) => {
                 area.updatedAt = new Date();
+            },
+            beforeCreate: (area) => {
+                area.slug = slugify(area.nombre, {lower: true});
             }
         }
 });
