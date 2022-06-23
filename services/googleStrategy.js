@@ -13,17 +13,8 @@ const googleLogin = new GoogleStrategy({
     passReqToCallback: true
 },  async (request, accessToken, refreshToken, profile, done) => {
     const email = profile.emails[0].value;
-        // const user = await User.findOne({ where:{ email: email } }).catch(error => {
-        //     console.log('Error',error);
-        //     return done(error, null);
-        // });
-
-        // if (user) {
-        //     console.log('User found', user);
-        //     return done(null, user);
-        // }
        
-        const [user] = await User.findOrCreate({
+        const user = await User.findOne({
             where: { email: email },
             defaults: {
                 name: profile.name.givenName,
@@ -40,8 +31,15 @@ const googleLogin = new GoogleStrategy({
         });
 
         if (user) {
-            console.log('User found', user.dataValues);
+            await user.update({
+                google_id: profile.id,
+                password: 'Devarana#1234*',
+                picture: user.picture === null ? profile.photos[0].value : user.picture
+            })
+            await user.save()
             return done(null, user.dataValues);
+        }else{
+            return done(null, false);
         }
 })
 
