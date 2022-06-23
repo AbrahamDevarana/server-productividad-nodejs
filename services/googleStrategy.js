@@ -22,8 +22,8 @@ const googleLogin = new GoogleStrategy({
         //     console.log('User found', user);
         //     return done(null, user);
         // }
-
-        const user = await User.findOrCreate({
+       
+        const [user] = await User.findOrCreate({
             where: { email: email },
             defaults: {
                 name: profile.name.givenName,
@@ -39,8 +39,8 @@ const googleLogin = new GoogleStrategy({
             return done(error, null);
         });
 
-        if (user.dataValues) {
-            // console.log('User found', user);
+        if (user) {
+            console.log('User found', user.dataValues);
             return done(null, user.dataValues);
         }
 })
