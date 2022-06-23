@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const slugify = require('slugify')
 const { nanoid } = require('nanoid');
 const Responsabilidad = require('./Responsabilidad');
+const Puestos = require('./Puestos');
 
 const Users = db.define('users', {
     id: {
@@ -65,7 +66,6 @@ const Users = db.define('users', {
     birth_date: {
         type: Sequelize.DATEONLY,
         allowNull: true,
-        defaultValue: '1990-01-01',
     },
     admission_date: {
         type: Sequelize.DATEONLY,
@@ -119,17 +119,40 @@ const Users = db.define('users', {
     },
     rol_id: {
         type: Sequelize.INTEGER,
-        defaultValue: 0,
+        allowNull: false,
+        validate: {
+            notEmpty: {
+                msg: 'El rol es requerido'
+            }
+        }        
     },
     position_id: {
         type: Sequelize.INTEGER,
-        defaultValue: 0,
+        allowNull: false,
+        validate: {
+            notEmpty: {
+                msg: 'El puesto es requerido'
+            }
+        }
     },
     department_id: {
         type: Sequelize.INTEGER,
-        defaultValue: 0,
+        allowNull: false,
+        validate: {
+            notEmpty: {
+                msg: 'El departamento es requerido'
+            }
+        }
     },
-    town_id: Sequelize.INTEGER,
+    town_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        validate: {
+            notEmpty: {
+                msg: 'El municipio es requerido'
+            }
+        }
+    },
     createdAt: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
@@ -182,6 +205,7 @@ Users.prototype.generateJWT = function() {
 
 // Relaciones
 Users.hasMany(Responsabilidad, {foreignKey: 'user_id'});
+Users.belongsTo(Puestos, { foreignKey: 'position_id', as: 'position' });
 
 
 module.exports = Users;

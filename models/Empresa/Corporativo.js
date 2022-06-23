@@ -60,7 +60,7 @@ Corporativo.hasMany(Valores, {
 Corporativo.hasMany(Competencias, {
     foreignKey: 'corporativo_id'
 })
-Corporativo.belongsTo(Responsponsabilidad, {
+Corporativo.hasMany(Responsponsabilidad, {
     foreignKey: 'corporativo_id'
 })
 module.exports = Corporativo;

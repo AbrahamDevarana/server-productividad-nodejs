@@ -13,7 +13,8 @@ exports.getCorporativo = async (req, res) => {
         })
 
     } catch (error) {
-        res.status(500).json({ msg: 'Server error' });
+        console.log(error);
+        res.status(500).json({ msg: 'Server error', error });
     }
     
 }
@@ -29,11 +30,11 @@ exports.updateCorporativo = async (req, res) => {
         let corporativo = await Corporativo.findOne({ where: { id: 1 }, include: [Valores, Competencias] });
         // Actualizar usuario
         if (corporativo) {
-            corporativo.proposito = proposito;
-            corporativo.mision = mision;
-            corporativo.vision = vision;
-            corporativo.logotipo = logotipo;
-            corporativo.isotipo = isotipo;
+            corporativo.proposito = proposito? proposito : corporativo.proposito;
+            corporativo.mision = mision? mision : corporativo.mision;
+            corporativo.vision = vision? vision : corporativo.vision;
+            corporativo.logotipo = logotipo? logotipo : corporativo.logotipo;
+            corporativo.isotipo = isotipo? isotipo : corporativo.isotipo;
             corporativo.fortaleza = fortaleza;
             corporativo.oportunidades = oportunidades;
             corporativo.debilidades = debilidades;
@@ -48,6 +49,6 @@ exports.updateCorporativo = async (req, res) => {
         }
 
     } catch (err) {
-        res.status(500).json({ msg: 'Server error' });;
+        res.status(500).json({ msg: 'Server error' , err});
     }
 }

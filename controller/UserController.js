@@ -1,7 +1,7 @@
 const Users = require('../models/Users');
 const { validationResult } = require('express-validator');
-const bcrypt = require('bcrypt');
 const Responsabilidad = require('../models/Responsabilidad');
+const moment = require('moment')
 
 exports.createUser = async(req, res) => {
     
@@ -11,9 +11,7 @@ exports.createUser = async(req, res) => {
         return res.status(400).json(errors.mapped());
     }
     const { name, email, lastName, secondLastName, birth_date, admission_date, phone, profile_description, street, 
-        suburb, bachelor_degree, birth_place, rol_id, position_id, department_id, town_id} = req.body;
-
-    const salt = bcrypt.genSalt(10);
+        suburb, bachelor_degree, birth_place, rol_id, position_id, department_id, town_id, isLeader} = req.body;
     try {
 
         let user = await Users.findOne({ where:{email} });
@@ -21,15 +19,13 @@ exports.createUser = async(req, res) => {
         if (user) {
             return res.status(400).json({ msg: 'Este usuario ya existe' });
         }
-
-
         user = await Users.create({
             name,
             email,
             lastName,
             secondLastName,
-            birth_date,
-            admission_date,
+            birth_date: moment(birth_date, 'DD-MM-YYYY').format('YYYY-MM-DD'),
+            admission_date: moment(admission_date, 'DD-MM-YYYY').format('YYYY-MM-DD'),
             phone,
             profile_description,
             street,
@@ -49,7 +45,8 @@ exports.createUser = async(req, res) => {
         })
         
     } catch (err) {
-        res.status(500).json({ msg: 'Server error' });
+        res.status(500).json({ msg: 'Server error', err });
+        console.log(err)
     }
 };
 
@@ -136,7 +133,7 @@ exports.deleteUser = async(req, res) => {
 
 exports.getUsers = async(req, res) => {
     try {
-        const users = await Users.findAll();
+        const users = await Users.findAll({ include : [ 'position' ] });
 
         if(!users){
             res.status(400).json({ msg: 'No hay usuarios registrados' });

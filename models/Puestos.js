@@ -54,8 +54,8 @@ const Puestos = db.define('puestos', {
     }
 })
 
-Puestos.hasOne( Users , {
-    foreignKey: 'position_id'
-})
+// Puestos.hasMany( Users , {
+//     foreignKey: 'position_id'
+// })
 
 module.exports = Puestos;
