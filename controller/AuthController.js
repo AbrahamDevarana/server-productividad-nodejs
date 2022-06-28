@@ -1,45 +1,59 @@
-const Users = require('../models/Users');
-const {validationResult} = require('express-validator');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken')
+const jwt = require('../services/jwt')
+const moment = require('moment')
+const Users = require('../models/Users')
 
+exports.getAccessToken = (req, res) =>{
+    if(req.user){
+        const accessToken = jwt.createAccessToken(req.user)
+        const refreshToken = jwt.createRefreshToken(req.user)
 
-exports.login = async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json( errors.mapped() );
-    }
-
-    const { email, password } = req.body;
-
-    try {
-        let user = await Users.findOne({ where: {email} });
-
-        if (!user) {
-            return res.status(401).json( { msg: 'El usuario no existe' } );
-        }
-
-        const isMatch = await bcrypt.compareSync(password, user.password);
-
-        if (!isMatch) {
-            return res.status(401).json({ msg: 'Contraseña incorrecta' });
-        }
-
-        const payload = {
-            user: {
-                id: user.id
-            }
-        };
-
-        const token = user.generateJWT();
-
-        res.status(200).json({
-            msg: 'Usuario autenticado',
-            token,
-        });
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).json({ msg: 'Server error' });;
+        res.status(200).json({ 
+            accessToken,
+            refreshToken
+         })
+    } else {
+        res.status(401).json({ msg: 'Debes iniciar sesión primero' })
     }
 }
 
+
+function willExpireToken(token){
+    const { expiresIn } = jwt.decodeToken(token)
+    const currentDate = moment().unix()
+
+    if(currentDate > expiresIn){
+        return true
+    }
+    return false
+}
+
+
+exports.refreshAccessToken = async (req, res) =>{
+
+    const {refreshToken} = req.body
+    const isTokenExpired = willExpireToken(refreshToken)
+
+    if(isTokenExpired){
+        res.status(404).json({ msg: "El refreshToken ha expirado" })
+    }else{
+        const { id } = jwt.decodeToken(refreshToken)
+        try {
+            const user = await Users.findOne({ where: { id: id } })
+            if(user){
+                
+                res.status(200).json({
+                    accessToken: jwt.createAccessToken(user),
+                    refreshToken: refreshToken
+                })
+            }else{
+                res.status(404).json({ msg: "No se encontró el usuario" })
+            }
+        } catch (error) {
+            res.status(500).json({ msg: "Error al obtener el usuario" })
+            console.log(error);
+        }
+
+        
+    }
+    
+}
