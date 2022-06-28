@@ -6,6 +6,8 @@ const slugify = require('slugify')
 const { nanoid } = require('nanoid');
 const Responsabilidad = require('./Responsabilidad');
 const Puestos = require('./Puestos');
+const Departamento = require('./Departamentos');
+const Municipio = require('./Municipio');
 
 const Users = db.define('users', {
     id: {
@@ -204,8 +206,9 @@ Users.prototype.generateJWT = function() {
 }
 
 // Relaciones
-Users.hasMany(Responsabilidad, {foreignKey: 'user_id'});
+Users.hasMany(Responsabilidad, {foreignKey: 'user_id', as: 'responsabilidades'});
 Users.belongsTo(Puestos, { foreignKey: 'position_id', as: 'position' });
-
+Users.belongsTo(Departamento, { foreignKey: 'department_id', as: 'department' });
+Users.belongsTo(Municipio, { foreignKey: 'town_id', as: 'town' });
 
 module.exports = Users;

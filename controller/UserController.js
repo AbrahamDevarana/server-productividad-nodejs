@@ -1,6 +1,5 @@
 const Users = require('../models/Users');
 const { validationResult } = require('express-validator');
-const Responsabilidad = require('../models/Responsabilidad');
 const moment = require('moment')
 
 exports.createUser = async(req, res) => {
@@ -152,7 +151,7 @@ exports.getUser = async(req, res) => {
     }
 
     try {
-        const user = await Users.findOne( { where: { id: req.params.id }, attributes : {exclude: ['password']}, include: [{ model: Responsabilidad }] });
+        const user = await Users.findOne( { where: { id: req.params.id }, attributes : {exclude: ['password']}, include: ['responsabilidades', 'position', 'department', 'town'] });
         if(!user){
             res.status(400).json({ msg: 'El usuario no existe' });
         }else{
@@ -170,7 +169,7 @@ exports.searchUser = async(req, res) => {
     }
 
     try {
-        const user = await Users.findOne( { where: { slug: req.params.slug } });
+        const user = await Users.findOne( { where: { slug: req.params.slug }, attributes : {exclude: ['password']}, include: ['responsabilidades', 'position', 'department', 'town'] });
         if(!user){
             res.status(400).json({ msg: 'El usuario no existe' });
         }else{

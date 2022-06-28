@@ -25,7 +25,9 @@ exports.updateCorporativo = async (req, res) => {
         return res.status(400).json({ errors: errors.array() });
     }
 
-    const { proposito, mision, vision, logotipo, isotipo, fortaleza, oportunidades, debilidades, amenazas } = req.body;
+    const { proposito, mision, vision, logotipo, isotipo, politica_responsabilidad } = req.body;
+
+    console.log(req.body);
     try {
         let corporativo = await Corporativo.findOne({ where: { id: 1 }, include: [Valores, Competencias] });
         // Actualizar usuario
@@ -35,10 +37,7 @@ exports.updateCorporativo = async (req, res) => {
             corporativo.vision = vision? vision : corporativo.vision;
             corporativo.logotipo = logotipo? logotipo : corporativo.logotipo;
             corporativo.isotipo = isotipo? isotipo : corporativo.isotipo;
-            corporativo.fortaleza = fortaleza;
-            corporativo.oportunidades = oportunidades;
-            corporativo.debilidades = debilidades;
-            corporativo.amenazas = amenazas;
+            corporativo.politica_responsabilidad = politica_responsabilidad ? politica_responsabilidad : corporativo.politica_responsabilidad;
             await corporativo.save();
             res.status(200).json({
                 msg: 'Corporativo actualizado',

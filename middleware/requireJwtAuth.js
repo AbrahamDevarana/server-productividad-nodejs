@@ -10,7 +10,7 @@ const Users = require('../models/Users')
 
 module.exports = (req, res, next) => {
     const token = req.header('accessToken')
-    if ( !token ) return res.status(401).json( { error: { msg: "Accesso no autorizado!!" } } )
+    if ( !token ) return res.status(401).json( { msg: "Accesso no autorizado", specialCode: 1000 } )
 
     try {
         jwt.verify(token, process.env.JWT_SECRET, async (error, decoded) => {

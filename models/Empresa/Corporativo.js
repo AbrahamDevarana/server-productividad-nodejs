@@ -31,18 +31,10 @@ const Corporativo = db.define('corporativo', {
         type: Sequelize.TEXT,
         allowNull: false,
     },
-    fortaleza: {
+    politica_responsabilidad: {
         type: Sequelize.TEXT,
+        allowNull:false
     },
-    oportunidades:{
-        type: Sequelize.TEXT,
-    },
-    debilidades: {
-        type: Sequelize.TEXT,
-    },
-    amenazas: {
-        type: Sequelize.TEXT,
-    }
 }, {
     paranoid: true,
     hooks: {
