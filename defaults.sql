@@ -56,8 +56,8 @@ INSERT INTO `puestos` (`id`, `nombre`, `descripcion`, `slug`, `estatus_id`, `cre
 (2, 'Trainee1', 'Noobe1', 'trainee', 1, '2022-06-22 16:38:06', '2022-06-22 17:05:06', NULL),
 (3, 'Gerente de Innovación y Calidad', 'Test Especial', 'gerente-de-innovacion-y-calidad', 1, '2022-06-27 14:34:23', '2022-06-27 14:34:23', NULL);
 
+ALTER TABLE `bd_productividad`.`users` CHANGE `town_id` `town_id` int NULL COMMENT '';
 
 INSERT INTO `users` (`id`, `name`, `lastName`, `secondLastName`, `email`, `short_name`, `password`, `active`, `birth_date`, `admission_date`, `phone`, `slug`, `rol_id`, `position_id`, `department_id`, `createdAt`, `updatedAt`) VALUES
 (1, 'Abraham', 'Alvarado', 'Guevara', 'abrahamalvarado@devarana.mx', 'AAG', '123', 1,  NOW(),  NOW(), '123456798', 'abraham_alvarado_abcde', 1, 1, 2, NOW(), NOW());
 
-ALTER TABLE `bd_productividad`.`users` CHANGE `town_id` `town_id` int NULL COMMENT '';

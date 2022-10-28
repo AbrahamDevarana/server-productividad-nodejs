@@ -6,7 +6,6 @@ exports.getAccessToken = (req, res) =>{
     if(req.user){
         const accessToken = jwt.createAccessToken(req.user)
         const refreshToken = jwt.createRefreshToken(req.user)
-
         res.status(200).json({ 
             accessToken,
             refreshToken
@@ -40,11 +39,13 @@ exports.refreshAccessToken = async (req, res) =>{
         try {
             const user = await Users.findOne({ where: { id: id } })
             if(user){
-                
-                res.status(200).json({
-                    accessToken: jwt.createAccessToken(user),
-                    refreshToken: refreshToken
-                })
+                res.cookie('refreshToken', refreshToken, { httpOnly: true, maxAge: moment().add(30, 'days').unix() })
+                .cookie('accessToken', jwt.createAccessToken(user), { httpOnly: true, maxAge: moment().add(3, 'days').unix() })
+
+                // res.status(200).json({
+                //     accessToken: jwt.createAccessToken(user),
+                //     refreshToken: refreshToken
+                // })
             }else{
                 res.status(404).json({ msg: "No se encontró el usuario" })
             }

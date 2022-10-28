@@ -29,14 +29,15 @@ app.use(cors( { origin: process.env.CLIENT_URL, credentials:true } ));
 
 app.use(cookieSession({
     secret: COOKIE_SECRET,
-    maxAge: 24 * 60 * 60 * 1000, // 24 hours,
-    saveUninitialized: true,
-    resave: false,
-    name: 'express',
+    name: 'productividad-session',
+    // cookie options
     cookie: {
         sameSite: process.env.NODE_ENV === "production" ? 'none' : 'lax', // must be 'none' to enable cross-site delivery
         secure: process.env.NODE_ENV === "production", // must be true if sameSite='none'
+        maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
     }
+    
+
 }));
 
 app.use(passport.initialize());
