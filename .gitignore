@@ -149,3 +149,5 @@ dist
 Info.html
 
 desktop.ini
+
+.env.development

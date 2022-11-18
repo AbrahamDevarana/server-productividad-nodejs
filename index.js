@@ -25,7 +25,7 @@ require('./models/Empresa/Responsabilidad.js');
 
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
-app.use(cors( { origin: process.env.CLIENT_URL, credentials:true } ));
+app.use(cors( { origin: process.env.CLIENT_URL, credentials: true } ));
 
 app.use(cookieSession({
     secret: COOKIE_SECRET,
@@ -35,9 +35,9 @@ app.use(cookieSession({
         sameSite: process.env.NODE_ENV === "production" ? 'none' : 'lax', // must be 'none' to enable cross-site delivery
         secure: process.env.NODE_ENV === "production", // must be true if sameSite='none'
         maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
-    }
-    
-
+    },
+    resave: false,
+    saveUninitialized: false
 }));
 
 app.use(passport.initialize());

@@ -1,0 +1,41 @@
+version: '3.0'
+
+services:
+  server:
+    build: .
+    ports:
+      - "5000:5000"
+    networks:
+      - productividadNetwork
+    depends_on:
+      mysql:
+        condition: service_healthy
+    links:
+      - mysql:mysql
+    
+  mysql:
+    image: mysql:5.7
+    hostname: mysql
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: devarana_productividad
+      MYSQL_DATABASE: bd_productividad
+      MYSQL_USER: docker_productividad
+      MYSQL_PASSWORD: devarana_productividad
+    networks:
+      - productividadNetwork
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./src/main/resources/db/init.sql:/data/application/init.sql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "docker_productividad", "-pdevarana_productividad" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+networks:
+  productividadNetwork:
+    name: productividadNetwork
+volumes:
+  db_data:
