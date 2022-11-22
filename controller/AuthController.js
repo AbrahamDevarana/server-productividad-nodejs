@@ -2,7 +2,7 @@ const jwt = require('../services/jwt')
 const moment = require('moment')
 const Users = require('../models/Users')
 
-exports.getAccessToken = (req, res) =>{
+exports.getAccessToken = (req, res) =>  {
     if(req.user){
         const accessToken = jwt.createAccessToken(req.user)
         const refreshToken = jwt.createRefreshToken(req.user)
