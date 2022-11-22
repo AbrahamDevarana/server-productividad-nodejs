@@ -5,7 +5,7 @@ const userController = require('../../controller/UserController');
 const responsabilidadController = require('../../controller/ResponsabilidadController');
 
 
-// @route   POST api/user/register
+// @route   POST api/user
 router.post('/',
     ///Validaciones
     [

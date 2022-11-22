@@ -1,0 +1,9 @@
+require('./Users.js');
+require('./Perspectiva.js');
+require('./Objetivos.js');
+require('./Responsabilidad.js');
+require('./Departamentos.js');
+require('./Empresa/Competencias.js');
+require('./Empresa/Corporativo.js');
+require('./Empresa/Valores.js');
+require('./Empresa/Responsabilidad.js');

@@ -11,16 +11,7 @@ const app = express();
 const COOKIE_SECRET = process.env.COOKIE_SECRET;
 
 //Models 
-require('./models/Users.js');
-require('./models/Perspectiva.js');
-require('./models/Objetivos.js');
-require('./models/Responsabilidad.js');
-require('./models/Departamentos.js');
-
-require('./models/Empresa/Competencias.js');
-require('./models/Empresa/Corporativo.js');
-require('./models/Empresa/Valores.js');
-require('./models/Empresa/Responsabilidad.js');
+require('./models');
 
 
 app.use(bodyParser.urlencoded({extended: false}))

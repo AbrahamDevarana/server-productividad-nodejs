@@ -2,8 +2,8 @@ const router = require('express').Router();
 const passport = require('passport');
 const isUserAuthenticated = require('../middleware/loginWithGoogle');
 const authController = require('../controller/AuthController')
-const jwt = require('../services/jwt')
-const moment = require('moment')
+const cookieSession = require('cookie-session');
+
 require('dotenv').config({ path: '.env' });
 
 
@@ -34,10 +34,24 @@ router.get('/validate', isUserAuthenticated, authController.getAccessToken)
 router.post('/refresh-access-token', authController.refreshAccessToken)
 
 router.get('/logout', (req, res) => {
-    res.clearCookie('productividad-session');
-    req.session.destroy(null);
-    req.session = '';
-    res.status(200).json({ msg: 'Has cerrado sesión correctamente' })
+    req.session = null;
+    res.session = null;
+    res.cookie('productividad-session', '', { maxAge: 0 })
+    res.clearCookie('productividad-session')
+    res.setHeader('set-cookie', 'productividad-session=; max-age=0');
+    cookieSession({
+        name: 'productividad-session',
+        cookie: {
+            maxAge: 0,
+            expires: new Date(0),
+            sameSite: 'lax',
+            secure: true,
+            httpOnly: true,
+        },
+        keys: [process.env.COOKIE_SECRET],
+    })
+
+    res.status(200).json({ msg: 'Has cerrado sesión correctamente' })    
 
 })
 
