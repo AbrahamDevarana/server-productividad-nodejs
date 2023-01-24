@@ -6,7 +6,9 @@ const router = require('./routes/index.js');
 const cors = require('cors');
 require('dotenv').config()
 const cookieSession = require('express-session');
+const cookieParser = require('cookie-parser');
 const app = express();
+require('./services/googleStrategy');
 
 const COOKIE_SECRET = process.env.COOKIE_SECRET;
 
@@ -20,23 +22,22 @@ app.use(cors( { origin: process.env.CLIENT_URL, credentials: true } ));
 
 app.use(cookieSession({
     secret: COOKIE_SECRET,
-    name: 'productividad-session',
-    // cookie options
+    name: 'connect.sid',
     cookie: {
         sameSite: process.env.NODE_ENV === "production" ? 'none' : 'lax', // must be 'none' to enable cross-site delivery
         secure: process.env.NODE_ENV === "production", // must be true if sameSite='none'
-        maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+        expires: 1000 * 60 * 60 * 24 * 7,
     },
     resave: false,
     saveUninitialized: false
 }));
 
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.set("trust proxy", 1);
-require('./services/googleStrategy');
 
-// Routes 
 app.use('/api', router);
 
 dbConfig.sync()
