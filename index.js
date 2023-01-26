@@ -1,19 +1,21 @@
 const express = require('express');
+const app = express();
 const bodyParser = require('body-parser');
-const dbConfig = require('./config/db.js');
+const dbConfig = require('./src/config/db.js');
 const passport = require('passport');
-const router = require('./routes/index.js');
+const router = require('./src/routes/index.js');
 const cors = require('cors');
 require('dotenv').config()
 const cookieSession = require('express-session');
-const cookieParser = require('cookie-parser');
-const app = express();
-require('./services/googleStrategy');
+const fs = require('fs');
+
+require('./src/models');
+const { socketService } = require('./src/services/socketService.js');
+require('./src/services/googleStrategy');
 
 const COOKIE_SECRET = process.env.COOKIE_SECRET;
 
 //Models 
-require('./models');
 
 
 app.use(bodyParser.urlencoded({extended: false}))
@@ -23,14 +25,13 @@ app.use(cors( { origin: process.env.CLIENT_URL, credentials: true } ));
 app.use(cookieSession({
     secret: COOKIE_SECRET,
     name: 'connect.sid',
+    resave: false,
+    saveUninitialized: true,
     cookie: {
         sameSite: process.env.NODE_ENV === "production" ? 'none' : 'lax', // must be 'none' to enable cross-site delivery
         secure: process.env.NODE_ENV === "production", // must be true if sameSite='none'
-        maxAge: 1000 * 60 * 60 * 24 * 7,
-        expires: 1000 * 60 * 60 * 24 * 7,
+        maxAge: Number(process.env.SESSION_MAX_TIME)
     },
-    resave: false,
-    saveUninitialized: false
 }));
 
 
@@ -42,14 +43,41 @@ app.use('/api', router);
 
 dbConfig.sync()
     .then( () => console.log('Conectado al servidor'))
-    .catch( error => console.log(error))
+    .catch( error => {
+        const errorinfo = `${new Date(Date.now()).toLocaleString()} - ${err} \n`
+        console.log(errorinfo);
+        fs.appendFile('logs/error.log', errorinfo, function (err) {
+            if (err) throw err;
+            process.exit(1);
+        })
+    })
 
+process.on('uncaughtException', (err) => {
+    const errorinfo = `${new Date(Date.now()).toLocaleString()} - ${err} \n`
+    console.log(errorinfo);
+    fs.appendFile('logs/error.log', errorinfo, function (err) {
+        if (err) throw err;
+        process.exit(1);
+    })
+});
+
+process.on('unhandledRejection', (err) => {
+    const errorinfo = `${new Date(Date.now()).toLocaleString()} - ${err} \n`
+    console.log(errorinfo);
+    fs.appendFile('logs/error.log', errorinfo, function (err) {
+        if (err) throw err;
+        process.exit(1);
+    })
+});
 
 
 
 const PORT = process.env.PORT || 5000;
-const HOST = process.env.HOST || "0.0.0.0"
+const HOST = process.env.HOST || "127.0.0.1"
 
-app.listen(PORT, HOST, () => {
+const server =  app.listen(PORT, HOST, () => {
     console.log(`Server running on port ${PORT}`);
+    console.log(server.address())
 });
+
+socketService(server)

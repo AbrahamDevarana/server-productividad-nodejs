@@ -18,7 +18,7 @@ const valoresRoutes = require('./api/Empresa/valoresRoutes');
 //TODO: Agregar Middleware
 
 
-// http://localhost:5000/api/
+
 router.use('/user', userRoutes)
 router.use('/perspectiva', perspectivaRoutes);
 router.use('/objetivo', objetivoRoutes);
@@ -28,7 +28,7 @@ router.use('/location', locationRoutes);
 router.use('/puesto', puestoRoutes);
 
 
-// http://localhost:5000/api/corporativo/
+
 router.use('/corporativo', corporativoRoutes)
 router.use('/corporativo/competencias', competenciasRoutes)
 router.use('/corporativo/responsabilidad', responsabilidadRoutes)

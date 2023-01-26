@@ -2,11 +2,11 @@ const router = require('express').Router();
 
 const apiRoutes = require('./apiRoutes');
 const googleAuth = require('./googleAuth');
-// const regularAuth = require('./regularAuth');
+const authRoutes = require('./authRoutes')
 const requireJwtAuth = require('../middleware/requireJwtAuth');
 
-router.use('/auth', googleAuth)
-// router.use('/login', regularAuth)
+router.use('/login', googleAuth)
+router.use('/auth', authRoutes)
 router.use('/', requireJwtAuth, apiRoutes)
 
 

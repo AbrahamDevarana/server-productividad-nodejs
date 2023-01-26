@@ -1,6 +1,6 @@
 const User = require('../models/Users');
 require("dotenv").config({ path: ".env" });
-
+const bcrypt = require('bcrypt')
 
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
@@ -22,7 +22,7 @@ const googleLogin = new GoogleStrategy({
                 secondLastName: (profile.name.familyName).split(" ", 2)[1],
                 email: email,
                 google_id: profile.id,
-                password: 'Devarana#1234*',
+                password: bcrypt.hashSync('DevaranA-#1234*', 10),
                 picture: profile.photos[0].value
             }
         }).catch(error => {
@@ -33,7 +33,6 @@ const googleLogin = new GoogleStrategy({
         if (user) {
             await user.update({
                 google_id: profile.id,
-                password: 'Devarana#1234*',
                 picture: user.picture === null ? profile.photos[0].value : user.picture
             })
             await user.save()
