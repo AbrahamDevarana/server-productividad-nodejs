@@ -1,41 +1,57 @@
-version: '3.0'
+version: '3.9'
+
 
 services:
-  server:
+  node-js:
+    # Debe llamarse productividad-api
+    container_name: productividad-api
     build: .
-    ports:
-      - "5000:5000"
-    networks:
-      - productividadNetwork
-    depends_on:
-      mysql:
-        condition: service_healthy
-    links:
-      - mysql:mysql
+    # archivo .env es .env.test
     
-  mysql:
-    image: mysql:5.7
-    hostname: mysql
-    ports:
-      - "3307:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: devarana_productividad
-      MYSQL_DATABASE: bd_productividad
-      MYSQL_USER: docker_productividad
-      MYSQL_PASSWORD: devarana_productividad
-    networks:
-      - productividadNetwork
-    volumes:
-      - db_data:/var/lib/mysql
-      - ./src/main/resources/db/init.sql:/data/application/init.sql
+      - PORT=5000
+    ports:
+      - 5020:5000
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "docker_productividad", "-pdevarana_productividad" ]
+      test: ["CMD", "curl", "--fail", "http://localhost:5000/health", "||", "exit", "1"]
+      interval: 5s
+      timeout: 2s
+      retries: 3
+    networks:
+      - app-network
+    links:
+      - db
+    restart: on-failure
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: mysql:5.7
+    container_name: productividad-db
+    hostname: mysql
+    environment:
+      - MYSQL_DATABASE=${DOCKER_DATABASE}
+      - MYSQL_USER=${DOCKER_DB_USER}
+      - MYSQL_PASSWORD=rootPass#123
+      - MYSQL_ROOT_PASSWORD=${DOCKER_DB_PASSWORD}
+    ports:
+      # <Port exposed> : <MySQL Port>
+      - 3308:${DOCKER_DB_PORT}
+    volumes:
+      - db_storage:/var/lib/mysql
+      - ./src/main/resources/db/init.sql:/data/application/init.sql
+    networks:
+      - app-network
+    healthcheck:
+      # test for mysql service startup
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 30s
 networks:
-  productividadNetwork:
-    name: productividadNetwork
+  app-network:
+    driver: bridge
+    
 volumes:
-  db_data:
+  db_storage:

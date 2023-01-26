@@ -1,31 +1,21 @@
-FROM node:19-alpine
+FROM node:16-alpine
 
-WORKDIR /app/server
+# Create app directory
+WORKDIR /app
 
-#pm2 
-RUN npm install -g npm@9.1.2
 RUN npm install pm2 -g
+RUN npm install npm@latest -g
 
-COPY .env.development .env
-COPY package.json .
-COPY index.js .
-COPY .sequelizerc .
-COPY src ./src
-COPY services /app/server/services
-COPY config /app/server/config
-COPY controller /app/server/controller
-COPY middleware /app/server/middleware
-COPY models /app/server/models
-COPY routes /app/server/routes
-
-
+# Install app dependencies
+COPY package*.json ./
 RUN npm install
 
-EXPOSE 5000
 
-RUN chmod -R 777 /app/server
+COPY . .
+COPY .env.test .env
+
+
+RUN chmod -R 777 /app
 USER node
 
-
-#
 CMD [ "pm2-runtime", "npm", "--", "start" ]
