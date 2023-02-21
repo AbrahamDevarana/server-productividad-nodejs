@@ -20,7 +20,7 @@ const COOKIE_SECRET = process.env.COOKIE_SECRET;
 
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
-app.use(cors( { origin: process.env.CLIENT_URL, credentials: true } ));
+app.use(cors( { origin: '*', credentials: true } ));
 
 app.use(cookieSession({
     secret: COOKIE_SECRET,
