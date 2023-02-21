@@ -21,8 +21,7 @@ const COOKIE_SECRET = process.env.COOKIE_SECRET;
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 app.use(cors({
-    origin: process.env.CLIENT_URL,
-    credentials: true
+    credentials: true,
 }))
 
 console.log(process.env.CLIENT_URL);
