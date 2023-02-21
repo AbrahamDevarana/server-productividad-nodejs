@@ -22,10 +22,9 @@ app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 app.use(cors({
     credentials: true,
-    origin: "*"
+    origin: process.env.CLIENT_URL
 }))
 
-console.log(process.env.CLIENT_URL);
 
 
 app.use(cookieSession({
