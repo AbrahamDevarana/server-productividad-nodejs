@@ -25,6 +25,7 @@ app.use(cors({
     origin: process.env.CLIENT_URL
 }))
 
+app.set("trust proxy", 1);
 
 
 app.use(cookieSession({
@@ -42,7 +43,7 @@ app.use(cookieSession({
 
 app.use(passport.initialize());
 app.use(passport.session());
-app.set("trust proxy", 1);
+
 
 app.use('/api', router);
 

@@ -73,13 +73,14 @@ exports.deleteArea = async(req, res) => {
 
 exports.getAreas = async(req, res) => {
 
-    const areas = await Area.findAll();
-
-    res.json({
-        areas,
-        msg: 'Areas obtenidas',
-    })
-
+    await Area.findAll().then(areas => {
+        res.status(200).json({
+            areas,
+            msg: 'Areas obtenidas',
+        })
+    }).catch(err => {
+        res.status(500).json({ msg: 'Server error', err});;
+    })    
 }
 
 exports.getArea = async(req, res) => {

@@ -7,7 +7,6 @@ router.get('/:id', areasController.getArea);
 
 
 router.post('/',
-    //validaciones
     [
         check('nombre').not().isEmpty().withMessage('El nombre es requerido').trim(),
         check('descripcion').not().isEmpty().withMessage('La descripcion es requerida'),
@@ -16,9 +15,7 @@ router.post('/',
 )
 
 router.put('/:id',
-    //validaciones
     [
-        // check('id').not().isEmpty().withMessage('El id es requerido'),
         check('nombre').not().isEmpty().withMessage('El nombre es requerido').trim(),
         check('descripcion').not().isEmpty().withMessage('La descripcion es requerida'),
     ],
